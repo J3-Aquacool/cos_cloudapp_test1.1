@@ -6,7 +6,7 @@ import axios from "axios";
 import { useEffect } from "react";
 
 import "./resultpage.css";
-
+import Modal from './ModalBox'; 
 const ResultsPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -17,14 +17,8 @@ const ResultsPage = () => {
   const [selectedCount, setSelectedCount] = useState(0);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState({});
 
+  const [isLoadingPDF, setIsLoadingPDF] = useState(false);
 
-  useEffect(() => {
-    const email = localStorage.getItem("email");
-    if (!email) {
-      // Redirect if no session exists
-      navigate("/login", { replace: true });
-    }
-  }, [navigate]);
   const [groupedQuestions, setGroupedQuestions] = useState(
     questions.reduce((acc, question, index) => {
       const { category } = question;
@@ -39,18 +33,32 @@ const ResultsPage = () => {
       return acc;
     }, {})
   );
-
   const [isSummarySubmitted, setIsSummarySubmitted] = useState(false);
-  const [submissionMessage, setSubmissionMessage] = useState("");
-
+  const [showModal, setShowModal] = useState(false);
   const categories = Object.keys(groupedQuestions);
 
-  const handleSummarySubmit = async () => {
+  
+  useEffect(() => {
+    const email = localStorage.getItem("email");
+    if (!email) {
+      // Redirect if no session exists
+      navigate("/login", { replace: true });
+    }
+  }, [navigate]);
+  
+
+ 
+
+
+
+  const handleSummarySubmit =()=> {
     if (selectedCount < 3) {
       alert("Please select exactly 3 questions before proceeding.");
       return;
     }
-
+    setShowModal(true); // Show modal for confirmation
+  };
+  const submitData = async () => {
     const resultData = [];
     categories.forEach((category) => {
       groupedQuestions[category].forEach((question) => {
@@ -73,18 +81,20 @@ const ResultsPage = () => {
       await axios.post("/api/submit-responses", resultData, {
         headers: {
           "Content-Type": "application/json",
-        },
+        }
       });
 
-      // Update UI state on successful submission
-      setIsSummarySubmitted(true);
-      setSubmissionMessage("Submission Successful! You can now view results.");
+      navigate("/logout", { replace: true });
+
+      //setShowModal(true);  // Show the modal on success
     } catch (error) {
+      alert("Error submitting responses:")
       console.error("Error submitting responses:", error);
     }
   };
 
   const handleViewResults = async () => {
+    setIsLoadingPDF(true); // Start loading
     try {
       const response = await axios.get(`/api/download-pdf?email=${encodeURIComponent(
           email
@@ -108,6 +118,11 @@ const ResultsPage = () => {
     navigate("/logout", { replace: true });
     } catch (error) {
       console.error("Error generating PDF:", error);
+    }
+
+    finally
+    {
+      setIsLoadingPDF(false); // End loading
     }
   };
 
@@ -143,6 +158,18 @@ const ResultsPage = () => {
   };
 
   return (
+
+    <div className="results-page-wrapper">
+    {/* Instructions Box */}
+    <div className="instructions-box">
+      <h4>Instructions</h4>
+      <p>
+        At this point, look over your answers and locate all of the answers you rated highest. 
+        Pick out the THREE items that seem most true for you and give each of those items an additional FOUR (4) points. 
+        You can now score your questionnaire. The scales will have more meaning to you once you have read the text in the next section.
+      </p>
+    </div>
+
     <div className="results-page">
       <h4>Career Inventory Scoring Sheet</h4>
       <div className="top-left-content">
@@ -150,6 +177,8 @@ const ResultsPage = () => {
         Welcome, {username} ({email})!
       </p>
     </div>
+    
+       
       <table>
         <thead>
           <tr>
@@ -185,27 +214,56 @@ const ResultsPage = () => {
             ))}
         </tbody>
       </table>
+      
+      
+
       <div className="button-container" style={{ display: "flex", gap: "10px" }}>
-        <button
+        <button  className="results-page-button"
           onClick={handleSummarySubmit}
           style={{ marginTop: "20px", padding: "10px 20px" }}
           disabled={isSummarySubmitted}
         >
           {isSummarySubmitted ? "Submission Completed" : "End Submission"}
         </button>
+{/* Show modal on submission success */}
 
+{showModal && (
+  <Modal
+    message="Are you sure you want to submit your responses?"
+    onConfirm={() => {
+      setShowModal(false);
+      submitData();
+    }}
+    onCancel={() => setShowModal(false)}
+  />
+)}
+
+{
+/*
+
+        
         <button
           onClick={handleViewResults}
           style={{ marginTop: "20px", padding: "10px 20px" }}
-          disabled={!isSummarySubmitted}
+          disabled={!isSummarySubmitted || isLoadingPDF}
         >
-          View Results
+        {isLoadingPDF ? "Generating PDF..." : "View Results"}
         </button>
+*/
+
+}
+<button
+onClick={handleViewResults}
+style={{ marginTop: "20px", padding: "10px 20px" }}
+disabled={!isSummarySubmitted || isLoadingPDF}
+>
+{isLoadingPDF ? "Generating PDF..." : "View Results"}
+</button>
       </div>
 
-      {submissionMessage && (
-        <p style={{ marginTop: "5px", color: "purple" }}>{submissionMessage}</p>
-      )}
+
+      
+    </div>
     </div>
   );
 };

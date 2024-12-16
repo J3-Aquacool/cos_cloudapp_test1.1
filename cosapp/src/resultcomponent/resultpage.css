@@ -1,139 +1,191 @@
 /* Base styling */
 body, html {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    height: 100%;
-    box-sizing: border-box;
-  }
-  
-  .top-left-content {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    font-size: 16px;
-    font-weight: bold;
-  }
-  
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  height: 100%;
+  box-sizing: border-box;
+}
 
-  .results-page {
-    max-width: 800px;
-    margin: auto;
-    padding: 1px;
-  }
-  
-  /*h1 {
-    font-size: 1.6em;
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-  }*/
+.top-left-content {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 12px;
+  font-weight: bold;
+}
 
-  h1 {
-    font-size: 2em; /* Larger font size for prominence */
-    text-align: center; /* Center-align the text */
-    color: #2F4F4F; /* Dark Slate Gray for a professional look */
-    font-family: 'Georgia', serif; /* A sophisticated serif font */
-    text-transform: uppercase; /* Optional: Makes the text all caps */
-    letter-spacing: 2px; /* Adds spacing between letters for elegance */
-    margin-bottom: 10px; /* Adds space below the heading */
-    border-bottom: 2px solid #FFA500; /* Optional: Add an underline with an appealing color */
-    padding-bottom: 5px; /* Adds spacing between the text and underline */
-  }
-  
-  /* Table styling */
-  table {
-    border: 2px solid rgb(85, 85, 85);
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.9em;
-    background: white;
-    margin: 0;
-  }
-  
-  th, td {
-    border: 1px solid rgb(85, 85, 85);
-    padding: 8px;
-    text-align: left;
-    font-size: 0.8em;
-    font-weight: normal;
-    color: rgb(209, 79, 19);
-    font-family: sans-serif;
-  }
-  
-  th {
-    position: sticky; /* Makes the header fixed while scrolling */
+.results-page {
+  flex-grow: 1; /* Allow this to take the remaining space */
+  overflow-y: auto;
+  margin-left: 50px; /* Reduced left margin to align with the instruction box */
+  padding-top: 10px;
+}
+
+/* Header styling */
+h1 {
+  font-size: 2em;
+  text-align: center;
+  color: #2F4F4F;
+  font-family: 'Georgia', serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #FFA500;
+  padding-bottom: 5px;
+}
+
+/* Table styling */
+table {
+  border: 2px solid rgb(85, 85, 85);
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9em;
+  background: white;
+  margin: 0;
+  margin-left: 0;
+}
+
+th, td {
+  border: 1px solid rgb(85, 85, 85);
+  padding: 8px;
+  text-align: left;
+  font-size: 0.8em;
+  font-weight: normal;
+  color: rgb(209, 79, 19);
+  font-family: sans-serif;
+}
+
+th {
+  position: sticky;
   top: 0;
   z-index: 2;
-    background-color:#F79646 
-    ;
-    color: rgb(85, 85, 85);
-    font-weight: bold;
-    text-align: center;
-    white-space: nowrap;
-  }
-  
-  td {
-    text-align: left;
-  }
-  
-  input[type="checkbox"] {
-    transform: scale(1.2);
-    cursor: pointer;
-    
-      display: block;
-      margin: 0 auto; /* Centers the checkbox horizontally */
-    
-  }
-  
+  background-color: #F79646;
+  color: rgb(85, 85, 85);
+  font-weight: bold;
+  text-align: center;
+}
 
-  /* Button styling */
-  button {
-    background-color: rgb(209, 79, 19) ;
-    color: white;
-    padding: 8px 16px; /* Reduced padding */
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    display: block;
-    margin: 20px auto;
-    font-size: 0.8em; /* Reduced font size */
-    width: fit-content;
-    font-family: sans-serif;
+td {
+  text-align: left;
+}
+
+/* Button styling */
+button {
+  background-color: rgb(209, 79, 19);
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: block;
+  margin: 20px auto;
+  font-size: 0.8em;
+  width: fit-content;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+/* Results and instruction layout */
+.results-page-wrapper {
+
+  display: flex; /* Align the instruction box and table side by side */
+  flex-direction: row;
+  gap: 10px; /* Reduce the gap between instructions and the table */
+  padding: 10px;
+  align-items: flex-start;
+}
+
+.instructions-box {
+  flex-basis: 25%; /* Adjust the width of the instruction box */
+  padding: 10px; /* Consistent padding inside the box */
+  background-color: #f9f9f9;
+  border: 1px solid, #FFA500;
+  border-radius: 5px;
+ 
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 150px; /* Push the instruction box slightly down */
+  margin-left: 0px; /* Move the instruction box further left */
+  height: auto;
+  margin-right: -60px;
+  font-size: 0.90em;
+  font-weight:normal;
+  color: rgb(209, 79, 19);
+}
+
+.instructions-box h4 {
+  margin: 0 0 5px;
+  font-size: 1.1em;
+}
+
+.instructions-box p {
+  font-size: 0.9em;
+  margin: 5px 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .results-page {
+    margin-left: 30px;
   }
-  
-  button:hover {
-    background-color: #45a049;
+
+  h1 {
+    font-size: 1.4em;
   }
-  
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    .results-page {
-      padding: 14px;
-    }
-    
-    h1 {
-      font-size: 1.4em;
-    }
-  
-    th, td {
-      font-size: 1em;
-      padding: 6px;
-      color: rgb(209, 79, 19);
-    }
+
+  th, td {
+    font-size: 1em;
+    padding: 6px;
   }
-  
-  @media (max-width: 480px) {
-    h1 {
-      font-size: 1.2em;
-    }
-  
-    table, th, td {
-      font-size: 0.75em;
-    }
-  
-    th, td {
-      padding: 5px;
-    }
+
+  .instructions-box {
+    flex-basis: 40%;
+    margin-left: -10px; /* Adjust for smaller screens */
   }
-  
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.2em;
+  }
+
+  table, th, td {
+    font-size: 0.75em;
+  }
+
+  th, td {
+    padding: 5px;
+  }
+
+  .instructions-box {
+    margin-left: 0;
+  }
+}
+button:disabled {
+  background-color: #d3d3d3; /* Light gray */
+  color: #888; /* Gray text */
+  cursor: not-allowed; /* Change cursor to indicate it's disabled */
+  border: 1px solid #ccc; /* Optional: Different border color */
+  display: none;
+}
+
+/* this is for exclusively modal box*/
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+
+
+
